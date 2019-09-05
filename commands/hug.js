@@ -10,14 +10,14 @@ module.exports = {
         if(args.length == 0)
             return message.reply("Please specify a target.");
         if(args.includes(`<@${client.user.id}>`))
-            return message.reply("I cannot do that!");
+            return message.reply("That is impossible.");
 
-        target = args.join(' ').replace(/me/ig, 'them').replace(/my/ig, 'their');
+        target = args.join(' ').replace(/\bme\b/ig, 'them').replace(/\bmy\b/ig, 'their');
         
-        giphy.random('slap').then(function (res) {
+        giphy.random('hug').then(function (res) {
             var embed = new RichEmbed();
             embed.setImage(res.data.image_original_url);
-            message.channel.send(`${message.author} has ordered me to slap ${target}!`, embed);
+            message.channel.send(`${message.author} has ordered me to hug ${target}.`, embed);
         });
         message.delete();
     }
