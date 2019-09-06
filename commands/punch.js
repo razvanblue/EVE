@@ -3,7 +3,9 @@ const {Client, RichEmbed} = require('discord.js');
 
 module.exports = {
     name: "punch",
+    aliases: [],
     description: "Punch something",
+    guildOnly: false,
     cooldown: 20,
     execute(message, args, client){
         if(args.length == 0)

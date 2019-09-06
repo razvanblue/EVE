@@ -2,7 +2,9 @@ const {Client} = require('discord.js');
 
 module.exports = {
     name: "help",
+    aliases: [],
     description: "Receive information about existing commands.",
+    guildOnly: false,
     cooldown: 10,
     execute(message, args, client){
         data = "Nasod Queen Eve is here to help you."

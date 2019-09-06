@@ -3,7 +3,9 @@ const {Client, RichEmbed} = require('discord.js');
 
 module.exports = {
     name: 'slap',
+    aliases: [],
     description: 'Slaps mentioned user',
+    guildOnly: false,
     cooldown: 12,
     execute(message, args, client){
         

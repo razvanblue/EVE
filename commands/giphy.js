@@ -3,7 +3,9 @@ const {Client, RichEmbed} = require('discord.js');
 
 module.exports = {
     name: "giphy",
+    aliases: [],
     description: "Search on giphy",
+    guildOnly: false,
     cooldown: 5,
     execute(message, args, client){
         if(args.length == 0)

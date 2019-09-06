@@ -41,8 +41,14 @@ client.on('message', message => {
     if (args[0] == `<@${client.user.id}>`) args.shift();
     const commandName = args.shift().toLowerCase();
 
-    const command = client.commands.get(commandName);
+    const command = client.commands.get(commandName)
+        || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
     if (command == undefined) return;
+    
+    if (command.guildOnly && message.channel.type !== 'text') {
+        return message.reply("I can't execute that command inside DMs!").catch(() => {});
+    }
+
     console.log(`sender: ${message.author} | message: ${message.content}`);
 
     const authorId = message.author.id;
