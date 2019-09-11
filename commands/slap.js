@@ -14,7 +14,7 @@ module.exports = {
         if(args.includes(`<@${client.user.id}>`))
             return message.reply("why do you wish to punish me?");
 
-        target = args.join(' ').replace(/me/ig, 'them').replace(/my/ig, 'their').replace(/myself/ig, 'themselves');
+        target = args.replace(/me/ig, 'them').replace(/my/ig, 'their').replace(/myself/ig, 'themselves');
         
         giphy.random('slap').then(function (res) {
             var embed = new RichEmbed();

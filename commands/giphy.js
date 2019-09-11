@@ -15,6 +15,7 @@ module.exports = {
             embed.setImage(res.data.image_original_url);
             embed.setTitle(args);
             message.reply(embed);
-        })
+        });
+        message.delete();
     }
 };

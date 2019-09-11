@@ -32,15 +32,15 @@ client.on('guildMemberAdd', member => {
 //Command handler
 client.on('message', message => {
     if (message.author.bot) return;
-    if (message.content.length > 100) return;
     if(!message.channel.memberPermissions(message.guild.me).has('SEND_MESSAGES'))
         return message.author.send(`I don't have permission to send messages in #${message.channel.name}.`).catch(() => {});
     
     //Check for command
-    const args = message.content.trim().split(/ +/);
-    if (args[0] == `<@${client.user.id}>`) args.shift();
-    const commandName = args.shift().toLowerCase();
-
+    const match = message.content.match(/^(<@616544855170089000>)?\s*[a-z]*[:!]?[\s$]/i);
+    if (match == null) return;
+    
+    const commandName = match[0].replace(`<@${client.user.id}>`, '').trim();
+    const args = message.content.slice(match[0].length);
     const command = client.commands.get(commandName)
         || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
     if (command == undefined) return;

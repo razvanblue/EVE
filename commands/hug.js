@@ -14,9 +14,9 @@ module.exports = {
         if(args.includes(`<@${client.user.id}>`))
             return message.reply("That is impossible.");
 
-        target = args.join(' ').replace(/\bme\b/ig, 'them').replace(/\bmy\b/ig, 'their');
+        target = args.replace(/\bme\b/ig, 'them').replace(/\bmy\b/ig, 'their');
         
-        giphy.random('hug').then(function (res) {
+        giphy.random('hug anime').then(function (res) {
             var embed = new RichEmbed();
             embed.setImage(res.data.image_original_url);
             message.channel.send(`${message.author} has ordered me to hug ${target}.`, embed);
