@@ -1,4 +1,5 @@
-var giphy = require('giphy-api')('vM1OQdMtu42byM0vOmTTaH7wFwPc7Pma');
+const giphyToken = require('../config.json');
+var giphy = require('giphy-api')(giphyToken);
 const {Client, RichEmbed} = require('discord.js');
 
 module.exports = {

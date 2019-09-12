@@ -3,9 +3,9 @@ var giphy = require('giphy-api')(giphyToken);
 const {Client, RichEmbed} = require('discord.js');
 
 module.exports = {
-    name: 'slap',
+    name: 'pat',
     aliases: [],
-    description: 'Slaps mentioned user',
+    description: 'Pat mentioned user',
     guildOnly: false,
     cooldown: 12,
     execute(message, args, client){
@@ -13,14 +13,14 @@ module.exports = {
         if(args.length == 0)
             return message.reply("Please specify a target.");
         if(args.includes(`<@${client.user.id}>`))
-            return message.reply("why do you wish to punish me?");
+            return message.reply("That is impossible.");
 
-        target = args.replace(/me/ig, 'them').replace(/my/ig, 'their').replace(/myself/ig, 'themselves');
+        target = args.replace(/\bme\b/ig, 'them').replace(/\bmy\b/ig, 'their');
         
-        giphy.random('slap').then(function (res) {
+        giphy.random('pat anime').then(function (res) {
             var embed = new RichEmbed();
             embed.setImage(res.data.image_original_url);
-            message.channel.send(`${message.author} has ordered me to slap ${target}!`, embed);
+            message.channel.send(`${message.author} has ordered me to pat ${target}.`, embed);
         });
         message.delete();
     }
