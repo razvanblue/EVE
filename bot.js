@@ -39,10 +39,6 @@ client.on('guildMemberAdd', member => {
     }
 })
 
-var respond = function(answer, wildCardArray, input) {
-    console.log(answer);
-}
-
 //Command handler
 client.on('message', message => {
     if (message.author.bot) return;
@@ -59,8 +55,10 @@ client.on('message', message => {
         || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
     
     if (command == undefined) {
+        console.log(message.content);
         if (message.content.startsWith('<@616544855170089000>'))
-            aimlInterpreter.findAnswer(message.content.slice('<@616544855170089000>'.length + 1),respond);
+            aimlInterpreter.findAnswer(message.content.slice('<@616544855170089000>'.length).trim(),
+                (answer, cbw, inp) => {console.log(inp); message.reply(answer);});
         return;
     }
     
