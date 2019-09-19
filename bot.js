@@ -29,7 +29,14 @@ for (var file of commandFiles){
 }
 
 client.once('ready', () => {
+    client.user.setActivity('Master', {type: 'LISTENING'});
     console.log(`Logged in as ${client.user.tag}!`);
+})
+
+//Message members who have been kicked out of a server
+client.on('guildMemberRemove', member => {
+    if(!member.user.bot)
+        member.user.send(`You have been removed from ${member.guild.name}.`);
 })
 
 //Greet new members
