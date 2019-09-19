@@ -1,10 +1,11 @@
 //Imports
 const fs = require('fs');
-const {Collection, Client} = require('discord.js');
-const {discordToken} = require('./config.json');
+const { Collection, Client, Attachment } = require('discord.js');
+const { discordToken } = require('./config.json');
+const Canvas = require('canvas');
 aimlHigh = require('aiml-high');
 const profile = require('./profile.json');
-var {greetings, greet} = require('./wordutils.js');
+var { greet } = require('./wordutils.js');
 
 
 //Initialize Discord Client and AIML Interpreter
@@ -32,20 +33,47 @@ client.once('ready', () => {
 })
 
 //Greet new members
-client.on('guildMemberAdd', member => {
+client.on('guildMemberAdd', async member => {
     const channel = member.guild.channels.find(ch => ch.name === 'pussychat');
-    if (channel){ 
-        channel.send(greet(member.user));
-    }
+    if (!channel) return;
+
+    const canvas = Canvas.createCanvas(700, 250);
+    const ctx = canvas.getContext('2d');
+
+    const [bg, avatar] = await Promise.all( [Canvas.loadImage('./img/bg.jpg'),
+                                Canvas.loadImage(member.user.displayAvatarURL)] );
+
+    ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
+
+	ctx.strokeStyle = '#74037b';
+    ctx.strokeRect(0, 0, canvas.width, canvas.height);
+    
+    ctx.font = '50px sans-serif';
+    ctx.fillStyle = 'LightPink';
+    ctx.textAlign = 'center'
+    ctx.fillText(member.displayName, canvas.width / 2 + 100, canvas.height / 2, canvas.width);
+    ctx.font = '35px sans-serif';
+    ctx.fillText(`Welcome to ${member.guild.name}!`, canvas.width / 2 + 100, 210, canvas.width);
+
+    ctx.beginPath();
+    ctx.arc(125, 125, 100, 0, Math.PI * 2, true);
+    ctx.closePath();
+    ctx.clip();
+
+    ctx.drawImage(avatar, 25, 25, 200, 200);
+
+    const attachment = new Attachment(canvas.toBuffer(), 'welcome-image.jpg');
+    channel.send(greet(member.user), attachment);
 })
 
 //Command handler
 client.on('message', message => {
     if (message.author.bot) return;
-    if(!message.channel.memberPermissions(message.guild.me).has('SEND_MESSAGES'))
-        return message.author.send(`I don't have permission to send messages in #${message.channel.name}.`).catch(() => {});
+    if ( ! (message.channel.memberPermissions(message.guild.me).has('SEND_MESSAGES')
+           && message.channel.memberPermissions(message.guild.me).has('VIEW_CHANNEL')) )
+        return message.author.send(`I am not allowed to send messages in #${message.channel.name}. I'm sorry.`).catch(() => {});
 
-        //Check for command
+    //Check for command
     const commandMatch = message.content.match(/^(<@616544855170089000>)?\s*[a-z]+[:!]?[\s$]/i);
     if (commandMatch == null) return;
     
